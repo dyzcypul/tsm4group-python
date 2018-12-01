@@ -1,0 +1,380 @@
+[
+  {
+    "appearances": {
+      "0": [
+        5729,
+        ""
+      ]
+    },
+    "armor": 0,
+    "classs": 4,
+    "displayid": 5729,
+    "flags2": 8192,
+    "id": 38,
+    "level": 1,
+    "name": "6Recruit's Shirt",
+    "slot": 4,
+    "slotbak": 4,
+    "source": [
+      5
+    ],
+    "sourcemore": [
+      {
+        "n": "Thomas Yance",
+        "t": 1,
+        "ti": 18672,
+        "z": 2367
+      }
+    ],
+    "subclass": -8,
+    "firstseenpatch": 0,
+    "avgbuyout": 819500,
+    "buyprice": 1,
+    "sellprice": 1,
+    "cost": [
+      1
+    ]
+  },
+  {
+    "appearances": {
+      "0": [
+        3265,
+        ""
+      ]
+    },
+    "armor": 0,
+    "classs": 4,
+    "displayid": 3265,
+    "flags2": 8192,
+    "id": 45,
+    "level": 1,
+    "name": "6Squire's Shirt",
+    "slot": 4,
+    "slotbak": 4,
+    "source": [
+      5
+    ],
+    "sourcemore": [
+      {
+        "n": "Thomas Yance",
+        "t": 1,
+        "ti": 18672,
+        "z": 2367
+      }
+    ],
+    "subclass": -8,
+    "firstseenpatch": 0,
+    "avgbuyout": 509000,
+    "buyprice": 1,
+    "sellprice": 1,
+    "cost": [
+      1
+    ]
+  },
+  {
+    "appearances": {
+      "0": [
+        8370,
+        ""
+      ]
+    },
+    "armor": 0,
+    "classs": 4,
+    "displayid": 8370,
+    "flags2": 8192,
+    "id": 53,
+    "level": 1,
+    "name": "6Neophyte's Shirt",
+    "slot": 4,
+    "slotbak": 4,
+    "source": [
+      5
+    ],
+    "sourcemore": [
+      {
+        "n": "Thomas Yance",
+        "t": 1,
+        "ti": 18672,
+        "z": 2367
+      }
+    ],
+    "subclass": -8,
+    "firstseenpatch": 0,
+    "avgbuyout": 340000,
+    "buyprice": 1,
+    "sellprice": 1,
+    "cost": [
+      1
+    ]
+  },
+  {
+    "appearances": {
+      "0": [
+        16610,
+        ""
+      ]
+    },
+    "armor": 0,
+    "classs": 4,
+    "displayid": 16610,
+    "flags2": 8192,
+    "id": 3426,
+    "level": 1,
+    "name": "6Bold Yellow Shirt",
+    "slot": 4,
+    "slotbak": 4,
+    "source": [
+      5
+    ],
+    "sourcemore": [
+      {
+        "n": "Lisbeth Schneider",
+        "t": 1,
+        "ti": 1299,
+        "z": 1519
+      }
+    ],
+    "subclass": -8,
+    "firstseenpatch": 0,
+    "avgbuyout": 609999,
+    "buyprice": 4000,
+    "dmgrange": 0.2,
+    "sellprice": 1000,
+    "cost": [
+      4000
+    ]
+  },
+  {
+    "appearances": {
+      "0": [
+        3686,
+        ""
+      ]
+    },
+    "armor": 0,
+    "classs": 4,
+    "displayid": 3686,
+    "flags2": 8192,
+    "id": 3427,
+    "level": 1,
+    "name": "6Stylish Black Shirt",
+    "slot": 4,
+    "slotbak": 4,
+    "source": [
+      5
+    ],
+    "sourcemore": [
+      {
+        "n": "Lisbeth Schneider",
+        "t": 1,
+        "ti": 1299,
+        "z": 1519
+      }
+    ],
+    "subclass": -8,
+    "firstseenpatch": 0,
+    "avgbuyout": 250000,
+    "buyprice": 6000,
+    "dmgrange": 0.2,
+    "sellprice": 1500,
+    "cost": [
+      6000
+    ]
+  },
+  {
+    "appearances": {
+      "0": [
+        10798,
+        ""
+      ]
+    },
+    "armor": 0,
+    "classs": 4,
+    "displayid": 10798,
+    "flags2": 8192,
+    "id": 3428,
+    "level": 1,
+    "name": "6Common Gray Shirt",
+    "slot": 4,
+    "slotbak": 4,
+    "source": [
+      5
+    ],
+    "subclass": -8,
+    "firstseenpatch": 0,
+    "avgbuyout": 160000,
+    "buyprice": 400,
+    "dmgrange": 0.2,
+    "sellprice": 100,
+    "cost": [
+      400
+    ]
+  },
+  {
+    "appearances": {
+      "0": [
+        2163,
+        ""
+      ]
+    },
+    "armor": 0,
+    "classs": 4,
+    "displayid": 2163,
+    "flags2": 8192,
+    "id": 6096,
+    "level": 1,
+    "name": "6Apprentice's Shirt",
+    "slot": 4,
+    "slotbak": 4,
+    "source": [
+      5
+    ],
+    "sourcemore": [
+      {
+        "n": "Thomas Yance",
+        "t": 1,
+        "ti": 18672,
+        "z": 2367
+      }
+    ],
+    "subclass": -8,
+    "firstseenpatch": 0,
+    "avgbuyout": 550000,
+    "buyprice": 1,
+    "sellprice": 1,
+    "cost": [
+      1
+    ]
+  },
+  {
+    "appearances": {
+      "0": [
+        2470,
+        ""
+      ]
+    },
+    "armor": 0,
+    "classs": 4,
+    "displayid": 2470,
+    "flags2": 8192,
+    "id": 6097,
+    "level": 1,
+    "name": "6Acolyte's Shirt",
+    "slot": 4,
+    "slotbak": 4,
+    "source": [
+      5
+    ],
+    "subclass": -8,
+    "firstseenpatch": 0,
+    "avgbuyout": 750000,
+    "buyprice": 1,
+    "sellprice": 1,
+    "cost": [
+      1
+    ]
+  },
+  {
+    "appearances": {
+      "0": [
+        11307,
+        ""
+      ]
+    },
+    "armor": 0,
+    "classs": 4,
+    "displayid": 11307,
+    "flags2": 8192,
+    "id": 6833,
+    "level": 1,
+    "name": "6White Tuxedo Shirt",
+    "slot": 4,
+    "slotbak": 4,
+    "source": [
+      2,
+      5
+    ],
+    "sourcemore": [
+      {
+        "icon": "inv_egg_06",
+        "n": "Brightly Colored Egg",
+        "q": 1,
+        "t": 3,
+        "ti": 45072
+      }
+    ],
+    "subclass": -8,
+    "firstseenpatch": 0,
+    "avgbuyout": 351008,
+    "dmgrange": 0.2,
+    "itemset": 812,
+    "cost": [
+      0,
+      [],
+      [
+        [
+          44791,
+          25
+        ]
+      ]
+    ]
+  },
+  {
+    "appearances": {
+      "0": [
+        10837,
+        "inv_shirt_02"
+      ]
+    },
+    "armor": 0,
+    "classs": 4,
+    "displayid": 10837,
+    "flags2": 8192,
+    "id": 16059,
+    "level": 1,
+    "name": "6Common Brown Shirt",
+    "slot": 4,
+    "slotbak": 4,
+    "source": [
+      5
+    ],
+    "subclass": -8,
+    "firstseenpatch": 0,
+    "avgbuyout": 750000,
+    "buyprice": 400,
+    "dmgrange": 0.2,
+    "sellprice": 100,
+    "cost": [
+      400
+    ]
+  },
+  {
+    "appearances": {
+      "0": [
+        10705,
+        ""
+      ]
+    },
+    "armor": 0,
+    "classs": 4,
+    "displayid": 10705,
+    "flags2": 8192,
+    "id": 16060,
+    "level": 1,
+    "name": "6Common White Shirt",
+    "slot": 4,
+    "slotbak": 4,
+    "source": [
+      5
+    ],
+    "subclass": -8,
+    "firstseenpatch": 0,
+    "avgbuyout": 297999,
+    "buyprice": 400,
+    "dmgrange": 0.2,
+    "sellprice": 100,
+    "cost": [
+      400
+    ]
+  }
+]

@@ -17,7 +17,7 @@ Version 1.1:
 -torack on 01.08.2018
 """
 
-
+import json
 import urllib.request
 
 import pandas
@@ -29,12 +29,13 @@ def filter_generator(slot_filters, expansion_filters, source_filters):
     for expansion_filter in expansion_filters:
         for source_filter in source_filters:
             for slot_filter in slot_filters:
-                yield (expansion_filter, expansion_filters[expansion_filter]), (source_filter, source_filter[source_filters]), (slot_filter, slot_filters[slot_filter])
+                yield (expansion_filter, expansion_filters[expansion_filter]), (source_filter, source_filters[source_filter]), (slot_filter, slot_filters[slot_filter])
 
 
 def construct_wowdb_url(xpac_filt, slot_filt, sour_filt, itype='armor', bind=2, craft=-2):
     """ Construct wowdb-url for given filter settings. """
-    url = f"https://www.wowdb.com/items/{itype}?filter-bind={bind}&filter-expansion={xpac_filt}&filter-slot={slot_filt}"
+    #url = f"https://www.wowdb.com/items/{itype}?filter-bind={bind}&filter-expansion={xpac_filt}&filter-slot={slot_filt}&filter-source={sour_filt}"
+    url = f"https://www.wowhead.com/armor/slot:4?filter=166:3:92;1:1:1;0:0:0"
     return url
 
 
@@ -51,33 +52,45 @@ def label_item_id(row):
 
 def read_item_table_from_wowdb_url(search_html, expansion):
     """ Read and reformat wowdb table returned by url-search. Returns pandas.DataFrame() """
-    soup = BeautifulSoup(search_html, 'lxml')
-    parsed_table = soup.find_all('table')[1]
-    data = [
-        [td.a['href'] if td.find('a') else
-         ''.join(td.stripped_strings)
-         for td in row.find_all('td')]
-        for row in parsed_table.find_all('tr')
-    ]
+    soup = BeautifulSoup(search_html, 'html.parser')
+    #parsed_table = soup.find_all('table')[1]
+    parsed_table = soup.find_all('script', type="text/javascript")[1]
+    output = str(parsed_table).partition('var listviewitems = [')[2].rpartition('];')[0]
+    output = output.replace("firstseenpatch", "\"firstseenpatch\"")
+    output = output.replace("cost", "\"cost\"")
+    data = json.loads('[%s]' % (output))
 
-    df = pandas.DataFrame(data[1:], columns=[
-                          'URL', 'URL2', 'URL3', 'Item Level', 'Req. Level', 'Slot', 'Source', 'Type'])
-    if not df.empty:
-        df['Item_ID'] = df.apply(lambda row: label_item_id(row), axis=1)
-        df['Expansion'] = expansion
-        df = df.dropna(axis=0, how='any')[
-            ['Item_ID', 'Item Level', 'Req. Level', 'Expansion', 'Slot', 'Source', 'Type']]
+    df = pandas.DataFrame(data, columns=[
+                          'armor', 'classs', 'id', 'name', 'slot', 'source', 'firstseenpatch'])
+    
     return df
+    # data = [
+    #     [td.a['href'] if td.find('a') else
+    #      ''.join(td.stripped_strings)
+    #      for td in row.find_all('td')]
+    #     for row in parsed_table.find_all('tr')
+    # ]
+
+    # df = pandas.DataFrame(data[1:], columns=[
+    #                       'URL', 'URL2', 'URL3', 'Item Level', 'Req. Level', 'Slot', 'Source', 'Type'])
+    # if not df.empty:
+    #     df['Item_ID'] = df.apply(lambda row: label_item_id(row), axis=1)
+    #     df['Expansion'] = expansion
+    #     df = df.dropna(axis=0, how='any')[
+    #         ['Item_ID', 'Item Level', 'Req. Level', 'Expansion', 'Slot', 'Source', 'Type']]
+    # return df
 
 
-def save_df_as_tsm_groups(df_main, outfile='armor_groups.dat'):
+def save_df_as_tsm_groups(df_main, outfile='armor_groups.dat', itype='Armor'):
     # tsm_group_sorting: quality -> armour_type -> slot
-    expansions = ['PrePanda', 'MoP', 'WoD', 'Legion', 'BFA']
-    armor_types = ['Plate', 'Mail', 'Leather',
-                   'Cloth', 'Finger', 'Trinket', 'Back', 'Neck']
+    #expansions = ['PrePanda', 'MoP', 'WoD', 'Legion', 'BFA']
+    expansions = ['PreBC']
+    #armor_types = ['Plate', 'Mail', 'Leather',
+    #               'Cloth', 'Finger', 'Trinket', 'Back', 'Neck', 'Shirt', 'Tabard']
+    armor_types = ['Shirt']
     slots = ['Chest', 'Feet', 'Hands', 'Head',
              'Legs', 'Shoulders', 'Waist', 'Wrists']
-    slot_types_as_subgroups = ['Finger', 'Trinket', 'Back', 'Neck']
+    slot_types_as_subgroups = ['Finger', 'Trinket', 'Back', 'Neck', 'Shirt', 'Tabard']
 
     title = 'Vendor Items'
     out_str = ''
@@ -86,9 +99,10 @@ def save_df_as_tsm_groups(df_main, outfile='armor_groups.dat'):
             if armor_type in slot_types_as_subgroups:
                 # get items with those attributes
                 df_items = df_main.loc[
-                    (df_main['Expansion'] == expansion) &
-                    (df_main['Type'] == armor_type)
+                    (df_main['firstseenpatch'] == 0) &
+                    (df_main['slot'] == 4)
                 ]
+                df_items = df_items.astype({"id": int})
 
                 if not df_items.empty:
                     # handle Back, Finger, Trinket group names
@@ -99,29 +113,33 @@ def save_df_as_tsm_groups(df_main, outfile='armor_groups.dat'):
                         armor_type_tmp = 'Rings'
                     if armor_type == 'Trinket':
                         armor_type_tmp = 'Trinkets'
+                    if armor_type == 'Shirt':
+                        armor_type_tmp = 'Shirts'
+                    if armor_type == 'Tabard':
+                        armor_type_tmp = 'Tabards'
 
                     # construct group identifier only if items found
-                    out_str += f'group:{title}`{expansion}`{armor_type_tmp},'
+                    out_str += f'group:{title}`{expansion}`{itype}`{armor_type_tmp},'
 
-                    item_ids = df_items['Item_ID'].values
+                    item_ids = df_items['id'].values
                     for item_id in item_ids:
                         out_str += f'i:{item_id},'
-            else:
-                for slot in slots:
-                    # select corresponding items from dataframe
-                    df_items = df_main.loc[
-                        (df_main['Expansion'] == expansion) &
-                        (df_main['Type'] == armor_type) &
-                        (df_main['Slot'] == slot)
-                    ]
+            #else:
+                # for slot in slots:
+                #     # select corresponding items from dataframe
+                #     df_items = df_main.loc[
+                #         (df_main['Expansion'] == expansion) &
+                #         (df_main['Type'] == armor_type) &
+                #         (df_main['Slot'] == slot)
+                #     ]
 
-                    if not df_items.empty:
-                        # construct group identifier
-                        out_str += f'group:{title}`{expansion}`{armor_type}`{slot},'
+                #     if not df_items.empty:
+                #         # construct group identifier
+                #         out_str += f'group:{title}`{expansion}`{itype}`{armor_type}`{slot},'
 
-                        item_ids = df_items['Item_ID'].values
-                        for item_id in item_ids:
-                            out_str += f'i:{item_id},'
+                #         item_ids = df_items['Item_ID'].values
+                #         for item_id in item_ids:
+                #             out_str += f'i:{item_id},'
 
     with open(outfile, 'w') as f:
         f.writelines(out_str)
@@ -130,17 +148,17 @@ def save_df_as_tsm_groups(df_main, outfile='armor_groups.dat'):
 # wowdb filter values per item slot
 armor_slot_filters = {
     'Back': 65536,
-    'Chest': 32,
-    'Feet': 256,
-    'Finger': 2048,
-    'Hands': 1024,
-    'Head': 2,
-    'Legs': 128,
-    'Neck': 4,  # not needed, Heart of Azeroth
-    'Shoulders': 8,
-    'Trinket': 4096,
-    'Waist': 64,
-    'Wrists': 512,
+    # 'Chest': 32,
+    # 'Feet': 256,
+    # 'Finger': 2048,
+    # 'Hands': 1024,
+    # 'Head': 2,
+    # 'Legs': 128,
+    # 'Neck': 4,  # not needed, Heart of Azeroth
+    # 'Shoulders': 8,
+    # 'Trinket': 4096,
+    # 'Waist': 64,
+    # 'Wrists': 512,
 }
 
 weapon_slot_filters = {
@@ -151,12 +169,16 @@ weapon_slot_filters = {
     'TwoHand': 131072
 }
 
+source_filters = {
+    'Vendor': 16384
+}
+
 expansion_filters = {
     'PrePanda': 4,
-    'MoP': 5,
-    'WoD': 6,
-    'Legion': 7,
-    'BFA': 8
+    # 'MoP': 5,
+    # 'WoD': 6,
+    # 'Legion': 7,
+    # 'BFA': 8
 }
 
 # wowdb filter values per item quality
@@ -168,17 +190,18 @@ quality_filters = {
 
 if __name__ == '__main__':
     df_main = pandas.DataFrame(
-        columns=['Item_ID', 'Item Level', 'Req. Level', 'Quality', 'Slot', 'Source', 'Type'])
-    for (quality, qual_filt), (slot, slot_filt) in filter_generator(slot_filters, quality_filters):
-        search_url = construct_wowdb_url(qual_filt, slot_filt)
+        columns=['Item_ID', 'Item Level', 'Req. Level', 'Expansion', 'Slot', 'Source', 'Type'])
+    for (expansion, xpac_filt), (source, sour_filt), (slot, slot_filt) in filter_generator(armor_slot_filters, expansion_filters, source_filters):
+        search_url = construct_wowdb_url(xpac_filt, slot_filt, sour_filt)
         return_html = read_source_from_url(search_url)
-        df = read_item_table_from_wowdb_url(return_html, quality)
+        df = read_item_table_from_wowdb_url(return_html, expansion)
 
         if not df.empty:
             # Remove Darkmoon Trinkets, the only items with Source == 'Created'
-            df = df[df.Source != 'Created']
+            #df = df[df.Source != 'Created']
+            #df = df[df.Source != 'Looted, Vendor']
 
             df_main = df_main.append(df)
 
     df_main = df_main.reset_index(drop=True)
-    save_df_as_tsm_groups(df_main, outfile='armor_groups.dat')
+    save_df_as_tsm_groups(df_main, outfile='vendor_armor_groups.dat')
